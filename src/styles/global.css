@@ -207,6 +207,7 @@ p { color: var(--tx-2); max-width: 64ch; }
   width: 100%;
   overflow: hidden;
   margin-bottom: -100vh;
+  margin-bottom: -100dvh;
   z-index: 0;
   pointer-events: none;
   background: var(--branco);
@@ -221,16 +222,6 @@ p { color: var(--tx-2); max-width: 64ch; }
 }
 
 /* ── HERO ── */
-/* ── CAPA (imagem de marca Gávea, tela cheia) ── */
-#capa {
-  min-height: 100vh;
-  min-height: 100dvh;
-  background-image: url('/gavea-green-background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 #hero {
   position: relative;
   z-index: 1;

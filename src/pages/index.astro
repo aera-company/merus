@@ -26,9 +26,6 @@ const year = new Date().getFullYear();
     </div>
   </header>
 
-  <!-- ── CAPA (imagem de marca Gávea) ── -->
-  <section id="capa" aria-label="Gávea Green — energia que transforma o futuro"></section>
-
   <!-- ── HERO + SOLUÇÃO (vídeo travado · scrub no scroll) ── -->
   <div class="video-stage" id="vstage">
     <div class="video-bg" aria-hidden="true">
@@ -83,6 +80,7 @@ const year = new Date().getFullYear();
           <li>Sem químicos.</li>
           <li>Sem consumo de energia.</li>
           <li>Sem manutenção recorrente.</li>
+          <li>ROI em poucos meses.</li>
           <li>05 anos de duração.</li>
         </ul>
       </div>
@@ -130,8 +128,8 @@ const year = new Date().getFullYear();
             e evita a formação de depósitos.
           </p>
           <div class="tec-destaque">
-            <strong>Instalado na infraestrutura existente</strong>
-            <span>Sem modificação de tubulação, soldagem ou penetração.</span>
+            <strong>Instalação rápida, sem parar a operação</strong>
+            <span>Instalado na infraestrutura existente, sem modificação de tubulação, soldagem ou penetração.</span>
           </div>
         </div>
 
@@ -538,18 +536,42 @@ const year = new Date().getFullYear();
 
       function ready() {
         duration = video.duration || 0;
-        video.pause();
         update();
-        if (prefersReduced) return;
+        if (prefersReduced) { video.pause(); return; }
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onScroll, { passive: true });
       }
 
-      if (video.readyState >= 1) {
-        ready();
-      } else {
-        video.addEventListener('loadedmetadata', ready, { once: true });
+      // iOS/Safari não renderiza o frame de um vídeo pausado que nunca "tocou".
+      // Damos um play mudo (permitido em muted+playsinline) e pausamos em seguida
+      // para fixar o primeiro frame — assim o scrub aparece também no mobile.
+      function prime() {
+        var p;
+        try { p = video.play(); } catch (e) {}
+        if (p && typeof p.then === 'function') {
+          p.then(function () { video.pause(); ready(); })
+           .catch(function () { video.pause(); ready(); });
+        } else {
+          video.pause();
+          ready();
+        }
       }
+
+      if (video.readyState >= 1) {
+        prime();
+      } else {
+        video.addEventListener('loadedmetadata', prime, { once: true });
+      }
+
+      // Fallback: se o autoplay mudo for bloqueado, prima o vídeo no primeiro toque.
+      window.addEventListener('touchstart', function primeOnce() {
+        window.removeEventListener('touchstart', primeOnce);
+        var p;
+        try { p = video.play(); } catch (e) {}
+        if (p && typeof p.then === 'function') {
+          p.then(function () { video.pause(); update(); }).catch(function () {});
+        }
+      }, { passive: true });
     })();
   </script>
 

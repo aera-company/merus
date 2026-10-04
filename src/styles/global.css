@@ -636,6 +636,16 @@ p { color: var(--tx-2); max-width: 64ch; }
   flex-shrink: 0;
 }
 
+.data-delta {
+  margin-top: clamp(20px, 3vw, 28px);
+  text-align: center;
+  font-family: var(--f-head);
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 600;
+  color: var(--tx-1);
+}
+.data-delta strong { color: var(--azul); font-weight: 700; }
+
 .data-mpy {
   margin-top: clamp(28px, 4vw, 40px);
   padding-top: 22px;
@@ -1733,4 +1743,151 @@ p { color: var(--tx-2); max-width: 64ch; }
 @media (max-width: 760px) {
   .contato-grid { grid-template-columns: 1fr; gap: 32px; }
   .campo-linha { grid-template-columns: 1fr; }
+}
+
+/* ── APLICAÇÕES (nova seção 04: ativos + lista) ── */
+.apps-assets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: end;
+  margin-top: clamp(32px, 5vw, 56px);
+  padding-bottom: clamp(28px, 4vw, 44px);
+  border-bottom: 1px solid var(--borda);
+}
+.apps-asset { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.apps-asset img {
+  width: 100%;
+  max-width: 300px;
+  max-height: clamp(170px, 22vw, 230px);
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.55s cubic-bezier(.22,.61,.36,1);
+}
+.apps-asset:hover img { transform: translateY(-6px); }
+.apps-asset figcaption {
+  font-family: var(--f-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--tx-1);
+}
+.apps-lista {
+  margin-top: clamp(32px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 40px;
+}
+.apps-lista li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 1rem;
+  color: var(--tx-1);
+  line-height: 1.4;
+}
+.apps-lista li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.5em;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--azul);
+  opacity: 0.75;
+}
+.apps-tag {
+  margin-top: clamp(28px, 4vw, 40px);
+  text-align: center;
+  font-family: var(--f-head);
+  font-weight: 600;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--azul);
+}
+@media (max-width: 760px) {
+  .apps-assets { grid-template-columns: 1fr; gap: 28px; }
+  .apps-lista { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* Ilustrações da seção 04: reveal suave no scroll (zero-JS, degrada OK) */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .apps-asset {
+      animation: appsReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    @keyframes appsReveal {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
+}
+
+/* ── FAIXA DE MARCA (vídeo aéreo Gávea) ── */
+.brand-band {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(360px, 56vh, 560px);
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+}
+.brand-band__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+.brand-band__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(3,42,26,0.80) 0%, rgba(3,42,26,0.48) 45%, rgba(3,42,26,0.25) 100%);
+}
+.brand-band__inner { color: #fff; max-width: 640px; padding-block: clamp(48px, 7vw, 88px); }
+.brand-band__eyebrow {
+  font-family: var(--f-body);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #9ff0c1; margin-bottom: 16px;
+}
+.brand-band__frase {
+  font-family: var(--f-head);
+  font-size: clamp(28px, 4.5vw, 52px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.brand-band__sub { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.5; color: rgba(255,255,255,0.88); max-width: 46ch; }
+@media (max-width: 760px) {
+  .brand-band__scrim { background: linear-gradient(180deg, rgba(3,42,26,0.55), rgba(3,42,26,0.72)); }
+}
+
+/* ── REVEAL SITE-WIDE (estilo new-3d AnimatedSection, zero-JS) ── */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    #tecnologia .tec-top,
+    #tecnologia .data-callout,
+    #resultados .section-label,
+    #res-titulo,
+    #resultados .section-corpo,
+    #resultados .ba-card,
+    #aplicacoes .section-label,
+    #ap-titulo,
+    #aplicacoes .section-corpo,
+    .faixa-verde__inner,
+    #case-arabia .case-texto,
+    #clientes .section-label,
+    #cl-titulo,
+    .logos-viewport,
+    .cl-nota,
+    .brand-band__inner,
+    #contato .contato-intro,
+    #contato .contato-form {
+      animation: revealUp linear both;
+      animation-timeline: view();
+      animation-range: entry 2% entry 42%;
+    }
+    @keyframes revealUp {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
 }

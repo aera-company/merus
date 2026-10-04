@@ -32,8 +32,35 @@ const canonical = Astro.site
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
     />
+    <style is:global>
+      html.lenis, html.lenis body { height: auto; }
+      .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+      .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+      .lenis.lenis-smooth iframe { pointer-events: none; }
+    </style>
   </head>
   <body>
     <slot />
+    <script src="/vendor/lenis.min.js" is:inline></script>
+    <script is:inline>
+      (function () {
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || typeof Lenis === 'undefined') return;
+        var lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+        function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        window.lenis = lenis;
+        // Âncoras internas com scroll suave (compensa o nav fixo)
+        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+          a.addEventListener('click', function (e) {
+            var id = a.getAttribute('href');
+            if (id && id.length > 1) {
+              var el = document.querySelector(id);
+              if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -72 }); }
+            }
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

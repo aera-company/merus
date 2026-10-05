@@ -1972,3 +1972,38 @@ p { color: var(--tx-2); max-width: 64ch; }
   .aplic-grid article { max-width: 480px; margin: 0 auto; }
   .aplic-list ul { grid-template-columns: 1fr; }
 }
+
+/* ── CINEMATOGRÁFICO 02→05 (painel MPY escuro + case Arabia escuro) ── */
+/* Tabela MPY como painel escuro premium */
+.data-callout {
+  background: linear-gradient(165deg, #0f2a20 0%, #09201a 100%);
+  border-color: rgba(255,255,255,0.10);
+}
+.data-n { color: #2fe884; }
+.data-block--ruim .data-n { color: rgba(255,255,255,0.42); }
+.data-unit { color: rgba(255,255,255,0.55); }
+.data-label { color: #fff; }
+.data-sub { color: rgba(255,255,255,0.55); }
+.data-vs { background: transparent; border-color: rgba(255,255,255,0.28); color: rgba(255,255,255,0.72); }
+.data-delta { color: #fff; }
+.data-delta strong { color: #2fe884; }
+.data-mpy { color: rgba(255,255,255,0.72); border-top-color: rgba(255,255,255,0.14); }
+.data-mpy strong { color: #2fe884; }
+.data-note { color: rgba(255,255,255,0.48); }
+
+/* Case Arabia — cinematográfico escuro */
+#case-arabia { background: #07160f; }
+#case-arabia #case-titulo { color: #fff; }
+#case-arabia .case-contrato { color: rgba(255,255,255,0.72); }
+#case-arabia .spec-nome { color: #fff; }
+#case-arabia .case-specs { border-top-color: rgba(255,255,255,0.16); }
+#case-arabia .case-specs li { border-bottom-color: rgba(255,255,255,0.12); }
+#case-arabia .spec-tag { color: #8ef0b8; background: rgba(0,159,74,0.16); border-color: rgba(0,159,74,0.42); }
+#case-arabia .case-media { background: #07160f; }
+#case-arabia .case-media::before {
+  content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(90deg, #07160f 0%, rgba(7,22,15,0.18) 34%, rgba(7,22,15,0) 56%);
+}
+@media (max-width: 860px) {
+  #case-arabia .case-media::before { display: none; }
+}

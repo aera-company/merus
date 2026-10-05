@@ -814,7 +814,11 @@ p { color: var(--tx-2); max-width: 64ch; }
 /* ── FAIXA VERDE (quebra de cor no meio da página) ── */
 .faixa-verde {
   position: relative;
-  background: var(--azul);
+  background:
+    linear-gradient(180deg, rgba(0,120,56,0.86) 0%, rgba(0,95,46,0.95) 100%),
+    url('/v2-01.jpg');
+  background-size: cover;
+  background-position: center;
   color: #fff;
   padding-block: clamp(64px, 10vw, 120px);
   overflow: hidden;
@@ -1889,4 +1893,44 @@ p { color: var(--tx-2); max-width: 64ch; }
       to   { opacity: 1; transform: translateY(0); }
     }
   }
+}
+
+/* ── FAIXA CINEMATOGRÁFICA (foto do anel instalado, parallax) ── */
+.cine-band {
+  position: relative;
+  min-height: clamp(420px, 68vh, 700px);
+  display: flex;
+  align-items: flex-end;
+  background-image: url('/image-03.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  isolation: isolate;
+}
+.cine-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(6,18,26,0.12) 0%, rgba(6,18,26,0.35) 45%, rgba(6,18,26,0.82) 100%);
+}
+.cine-band__inner {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  padding-block: clamp(40px, 7vw, 84px);
+}
+.cine-band__eyebrow {
+  font-family: var(--f-body);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #9ff0c1; margin-bottom: 14px;
+}
+.cine-band__frase {
+  font-family: var(--f-head);
+  font-size: clamp(24px, 3.4vw, 42px); font-weight: 700; line-height: 1.14; letter-spacing: -0.015em;
+  max-width: 20ch; color: #fff;
+}
+@media (max-width: 760px) {
+  .cine-band { background-attachment: scroll; min-height: 400px; }
+  .cine-band::after { background: linear-gradient(180deg, rgba(6,18,26,0.25), rgba(6,18,26,0.82)); }
 }

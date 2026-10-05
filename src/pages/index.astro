@@ -253,7 +253,7 @@ const year = new Date().getFullYear();
     <div class="container faixa-verde__inner">
       <p class="faixa-verde__frase">
         Mais do que tratar a água, o MERUS <strong>preserva a eficiência do sistema</strong>
-        ao longo do tempo &mdash; sem químicos, sem paradas e sem alterar o processo.
+        ao longo do tempo, sem químicos, sem paradas e sem alterar o processo.
       </p>
     </div>
   </section>
@@ -457,8 +457,6 @@ const year = new Date().getFullYear();
     <div class="container footer-inner">
       <div class="footer-brand">
         <div class="footer-logos">
-          <img src="/merus-logo2.svg" alt="MERUS" width="100" height="48" class="footer-logo" />
-          <span class="footer-logo-sep" aria-hidden="true"></span>
           <img src="/gavea-green-bco.png" alt="Gavea Green" class="footer-logo-gavea" />
         </div>
         <p>Tratamento físico de fluidos.<br>Fabricado na Alemanha desde 1995.</p>
@@ -488,18 +486,9 @@ const year = new Date().getFullYear();
 
       var duration = 0;
       var ticking = false;
-      var bg = video.closest('.video-bg');
-      var lastY = window.pageYOffset || 0;
 
       function update() {
         ticking = false;
-        // #3: ao rolar para cima, a peça "some" (fade-out); ao descer, reaparece.
-        var y = window.pageYOffset || 0;
-        if (bg) {
-          if (y < lastY - 2) bg.style.opacity = '0';
-          else if (y > lastY + 2) bg.style.opacity = '1';
-        }
-        lastY = y;
         if (!duration) return;
         var rect = stage.getBoundingClientRect();
         var total = stage.offsetHeight - window.innerHeight;
@@ -619,6 +608,39 @@ const year = new Date().getFullYear();
           e.preventDefault();
         }
       }, { passive: false });
+    })();
+  </script>
+
+  <!-- Contadores animados: indicadores (+70, 30+, 90%) e tabela MPY (1.03 / 2.87) -->
+  <script is:inline>
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!('IntersectionObserver' in window)) return;
+      function animate(el) {
+        var raw = el.textContent.trim();
+        var m = raw.match(/^([\d]+(?:[.,][\d]+)?)(.*)$/);
+        if (!m) return;
+        var numStr = m[1].replace(',', '.'), suffix = m[2];
+        var target = parseFloat(numStr);
+        var decimals = (numStr.split('.')[1] || '').length;
+        var dur = 1300, start = null;
+        function fmt(v) { return decimals ? v.toFixed(decimals) : String(Math.round(v)); }
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min(1, (ts - start) / dur);
+          var e = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt(e * target) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        el.textContent = fmt(0) + suffix;
+        requestAnimationFrame(step);
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { io.unobserve(en.target); animate(en.target); }
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('.faixa-n, .data-n').forEach(function (n) { io.observe(n); });
     })();
   </script>
 

@@ -1934,3 +1934,41 @@ p { color: var(--tx-2); max-width: 64ch; }
   .cine-band { background-attachment: scroll; min-height: 400px; }
   .cine-band::after { background: linear-gradient(180deg, rgba(6,18,26,0.25), rgba(6,18,26,0.82)); }
 }
+
+/* ── APLICAÇÕES v2 (Vessel / FPSO / Offshore com circuito) ── */
+.aplic { background: var(--cinza-sec); }
+.aplic-kicker {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
+  color: var(--azul); margin-bottom: 28px;
+}
+.aplic-kicker::before { content: ''; width: 28px; height: 2px; background: var(--azul); flex-shrink: 0; }
+.aplic-head { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: end; margin-bottom: 44px; }
+.aplic-lead { font-size: 1rem; color: var(--tx-2); max-width: 46ch; }
+.aplic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 56px; }
+.aplic-grid article { min-width: 0; }
+.aplic-grid .asset-diagram { background: #f7faf8; border-radius: 6px; border: 1px solid var(--borda); }
+.aplic-card-head { display: flex; flex-direction: column; gap: 8px; margin: 22px 0 14px; }
+.aplic-card-head h3 { font-size: 1.3rem; }
+.aplic-card-head span { font-size: 0.75rem; color: var(--azul); font-weight: 600; }
+.aplic-grid article > p { color: var(--tx-2); font-size: 0.9rem; max-width: 38ch; line-height: 1.5; }
+.aplic-list { display: grid; grid-template-columns: 1fr 2fr; gap: 70px; padding-top: 38px; border-top: 1px solid var(--borda); }
+.aplic-list h3 { margin-bottom: 16px; }
+.aplic-list > div > p { font-size: 0.9rem; color: var(--tx-2); margin-bottom: 16px; max-width: 30ch; line-height: 1.5; }
+.aplic-cta { display: inline-flex; align-items: center; gap: 8px; color: var(--azul); font-weight: 600; font-size: 0.92rem; }
+.aplic-list ul { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; align-content: start; }
+.aplic-list li { display: flex; align-items: flex-start; gap: 12px; padding-block: 12px; font-size: 0.9rem; border-bottom: 1px solid var(--borda); color: var(--tx-1); }
+.aplic-list li svg { flex-shrink: 0; margin-top: 4px; color: var(--azul); }
+.asset-diagram { width: 100%; height: auto; display: block; }
+.asset-diagram .circuit { stroke-dasharray: 420; stroke-dashoffset: 0; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .asset-diagram:hover .circuit { animation: circuit-draw 1s ease-out; }
+}
+@keyframes circuit-draw { from { stroke-dashoffset: 420; } to { stroke-dashoffset: 0; } }
+@media (max-width: 900px) { .aplic-list { grid-template-columns: 1fr; gap: 30px; } .aplic-grid { gap: 16px; } }
+@media (max-width: 680px) {
+  .aplic-head { grid-template-columns: 1fr; gap: 24px; }
+  .aplic-grid { grid-template-columns: 1fr; gap: 36px; }
+  .aplic-grid article { max-width: 480px; margin: 0 auto; }
+  .aplic-list ul { grid-template-columns: 1fr; }
+}

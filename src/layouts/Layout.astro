@@ -47,6 +47,8 @@ const canonical = Astro.site
     />
     <style is:global>
       html.lenis, html.lenis body { height: auto; }
+      /* a rolagem suave do CSS não pode competir com a do Lenis */
+      html.lenis { scroll-behavior: auto !important; }
       .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
       .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
       .lenis.lenis-scrolling iframe { pointer-events: none; }

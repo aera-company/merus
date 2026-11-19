@@ -96,7 +96,7 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
   <!-- ── HERO + SOLUÇÃO (vídeo travado · scrub no scroll) ── -->
   <div class="video-stage" id="vstage">
     <div class="video-bg" aria-hidden="true">
-      <video id="bgvideo" src="/video-merus-v3.mp4" muted playsinline preload="auto"></video>
+      <video id="bgvideo" src="/video-merus-scrub.mp4" muted playsinline preload="auto" disablepictureinpicture></video>
     </div>
 
   <section id="hero" aria-labelledby="hero-titulo">
@@ -554,19 +554,32 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       var duration = 0;
+      var target = 0;
       var ticking = false;
+      var primed = false;   // depois do "prime", o vídeo só anda pelo scroll
+      var pending = false;  // há um alvo novo esperando o seek atual terminar
+      var started = false;
+
+      // Leva o vídeo até `target`. Um seek por vez: disparar seeks em cima de
+      // seeks faz alguns navegadores (Safari) pararem no quadro errado.
+      function apply() {
+        if (!duration) return;
+        if (primed && !video.paused) video.pause();
+        if (video.seeking) { pending = true; return; }
+        if (Math.abs(video.currentTime - target) > 1 / 60) {
+          try { video.currentTime = target; } catch (e) {}
+        }
+      }
 
       function update() {
         ticking = false;
         if (!duration) return;
-        var rect = stage.getBoundingClientRect();
         var total = stage.offsetHeight - window.innerHeight;
         if (total <= 0) return;
-        var progress = Math.min(1, Math.max(0, -rect.top / total));
-        var t = progress * duration;
-        if (Math.abs(video.currentTime - t) > 1 / 60) {
-          try { video.currentTime = t; } catch (e) {}
-        }
+        var progress = Math.min(1, Math.max(0, -stage.getBoundingClientRect().top / total));
+        // para um quadro antes do fim, para o vídeo nunca entrar em "ended"
+        target = Math.min(progress * duration, Math.max(0, duration - 0.05));
+        apply();
       }
 
       function onScroll() {
@@ -576,12 +589,26 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
         }
       }
 
+      // Ao terminar um seek, aplica o alvo mais recente (garante o quadro final certo).
+      video.addEventListener('seeked', function () {
+        if (pending) { pending = false; apply(); }
+      });
+      // Se algo fizer o vídeo tocar sozinho, pausa e volta para o quadro do scroll.
+      video.addEventListener('play', function () {
+        if (primed) { video.pause(); onScroll(); }
+      });
+
       function ready() {
+        primed = true;
         duration = video.duration || 0;
         update();
+        if (started) return;
+        started = true;
         if (prefersReduced) { video.pause(); return; }
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onScroll, { passive: true });
+        window.addEventListener('pageshow', onScroll);
+        document.addEventListener('visibilitychange', onScroll);
       }
 
       // iOS/Safari não renderiza o frame de um vídeo pausado que nunca "tocou".
@@ -589,6 +616,7 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
       // para fixar o primeiro frame — assim o scrub aparece também no mobile.
       function prime() {
         var p;
+        primed = false;
         try { p = video.play(); } catch (e) {}
         if (p && typeof p.then === 'function') {
           p.then(function () { video.pause(); ready(); })
@@ -608,11 +636,8 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
       // Fallback: se o autoplay mudo for bloqueado, prima o vídeo no primeiro toque.
       window.addEventListener('touchstart', function primeOnce() {
         window.removeEventListener('touchstart', primeOnce);
-        var p;
-        try { p = video.play(); } catch (e) {}
-        if (p && typeof p.then === 'function') {
-          p.then(function () { video.pause(); update(); }).catch(function () {});
-        }
+        if (!video.paused) return;
+        prime();
       }, { passive: true });
     })();
   </script>

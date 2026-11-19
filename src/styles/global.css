@@ -1762,12 +1762,12 @@ p { color: var(--tx-2); max-width: 64ch; }
 .contato-pessoas {
   margin-top: 12px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 .contato-pessoas li {
-  display: flex; flex-direction: column; gap: 2px;
-  padding: 18px 18px 12px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 24px;
+  padding: 16px 20px 10px;
   border: 1px solid var(--borda);
   border-radius: var(--r-lg);
   background: var(--branco);
@@ -1776,7 +1776,8 @@ p { color: var(--tx-2); max-width: 64ch; }
 .contato-pessoas strong {
   font-family: var(--f-head);
   font-size: 1rem; font-weight: 700; color: var(--tx-1);
-  margin-bottom: 4px;
+  flex: 0 0 100%;
+  margin-bottom: 2px;
 }
 .contato-pessoas a {
   display: flex; align-items: center; gap: 9px;
@@ -1788,7 +1789,7 @@ p { color: var(--tx-2); max-width: 64ch; }
 .contato-pessoas a svg { flex-shrink: 0; color: var(--azul); }
 .contato-pessoas a:hover { color: var(--azul); }
 .contato-pessoas a:focus-visible { outline: 2px solid var(--azul); outline-offset: 2px; border-radius: 4px; }
-@media (max-width: 1100px) { .contato-pessoas { grid-template-columns: 1fr; } }
+
 .contato-form {
   background: var(--cinza-sec);
   border: 1px solid var(--borda);

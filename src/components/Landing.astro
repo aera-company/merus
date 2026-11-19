@@ -1,0 +1,669 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AssetDiagram from "./AssetDiagram.astro";
+import { dict, CASE_STUDIES_URL, type Lang } from "../i18n/dict";
+
+interface Props { lang?: Lang; }
+const { lang = "pt" } = Astro.props;
+const t = dict[lang];
+const year = new Date().getFullYear();
+
+// ── VÍDEO MERUS ─────────────────────────────────────────────────────────────
+// Enquanto os dois campos estiverem vazios, a seção mostra o espaço reservado.
+// Para ativar, preencha UM deles:
+//   youtubeId: o ID do vídeo no YouTube (ex.: "dQw4w9WgXcQ")
+//   file:      um arquivo dentro de /public (ex.: "/merus-video.mp4")
+const VIDEO = { youtubeId: "", file: "", poster: "/image-03.jpg" };
+
+const stats = ["70+", "30+", "0", "90%"];
+
+const baImgs = [
+  { depois: "/heat-enchance-depois.png", antes: "/heat-enchance-antes.png" },
+  { depois: "/corrosao-depois.png", antes: "/corrosao-antes.png" },
+  { depois: "/steam-boiler-depois.png", antes: "/steam-boiler-antes.png" },
+];
+
+const assetTypes = ["vessel", "fpso", "platform"] as const;
+
+const logos = [
+  { src: "aramco", alt: "Saudi Aramco" },
+  { src: "adnoc", alt: "ADNOC" },
+  { src: "shell", alt: "Shell" },
+  { src: "petrochina", alt: "PetroChina" },
+  { src: "transocean", alt: "Transocean" },
+  { src: "sinopec", alt: "Sinopec" },
+  { src: "wintershall", alt: "Wintershall" },
+  { src: "pertamina", alt: "Pertamina" },
+  { src: "borr-drilling", alt: "Borr Drilling" },
+  { src: "subsea7", alt: "Subsea7" },
+  { src: "cbo", alt: "Grupo CBO" },
+  { src: "oceanpact", alt: "OceanPact" },
+  { src: "braskem", alt: "Braskem" },
+  { src: "foresea", alt: "Foresea" },
+  { src: "tranship", alt: "Tranship" },
+  { src: "eletronuclear", alt: "Eletronuclear" },
+  { src: "b-braun", alt: "B. Braun" },
+];
+
+// Ring x Chain (seção Tecnologia)
+const modeloImgs = ["/image-03.jpg", "/cases/merus-chain.jpg"];
+
+const caseSpecs = [
+  ["Deep well risers", "MERUS Chain"],
+  ["Raw water pump", "MERUS Chain"],
+  ["Brake resistors", "MERUS Ring"],
+  ["Engine inlet", "MERUS Ring"],
+  ["Compressors", "MERUS Ring"],
+  ["Main chiller unit", "MERUS Ring"],
+  ["Fire fighting lines", "MERUS Ring"],
+];
+
+const contatos = [
+  { nome: "Leo Moteff", email: "leo.moteff@gaveagroup.com", tel: "+55 21 99118-4208" },
+  { nome: "Rafael Willi", email: "rafael.willi@gavea-green.com", tel: "+55 21 99702-3029" },
+];
+const mailto = (email: string) => `mailto:${email}?subject=${encodeURIComponent(t.ct.mailSubject)}`;
+const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
+---
+
+<Layout title={t.meta.title} description={t.meta.description} lang={lang}>
+
+  <!-- ── NAV ── -->
+  <header class="nav" id="topo">
+    <div class="nav-inner container">
+      <a href="#topo" class="logo" aria-label={t.nav.home}>
+        <img src="/merus-logo2.svg" alt="MERUS" width="100" height="48" />
+        <span class="logo-sep" aria-hidden="true"></span>
+        <img src="/gavea-green.png" alt="Gavea Green" class="logo-gavea" width="92" height="48" />
+      </a>
+      <nav class="nav-links" aria-label={t.nav.main}>
+        <a href="#solucao">{t.nav.solucao}</a>
+        <a href="#tecnologia">{t.nav.tecnologia}</a>
+        <a href="#aplicacoes">{t.nav.aplicacoes}</a>
+        <a href="#clientes">{t.nav.clientes}</a>
+        <a href={CASE_STUDIES_URL} target="_blank" rel="noopener" class="nav-ext">{t.nav.cases}
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4 2h6v6M10 2 2.5 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </nav>
+      <div class="lang-switch" role="group" aria-label={t.nav.lang}>
+        <a href="/" hreflang="pt-BR" lang="pt-BR" aria-label="Português" aria-current={lang === "pt" ? "true" : undefined}>PT</a>
+        <a href="/en/" hreflang="en" lang="en" aria-label="English" aria-current={lang === "en" ? "true" : undefined}>EN</a>
+      </div>
+      <a href="#contato" class="btn-nav" aria-label={t.nav.cta}><span class="btn-nav__long">{t.nav.cta}</span><span class="btn-nav__short" aria-hidden="true">{t.nav.ctaShort}</span></a>
+    </div>
+  </header>
+
+  <!-- ── HERO + SOLUÇÃO (vídeo travado · scrub no scroll) ── -->
+  <div class="video-stage" id="vstage">
+    <div class="video-bg" aria-hidden="true">
+      <video id="bgvideo" src="/video-merus-v3.mp4" muted playsinline preload="auto"></video>
+    </div>
+
+  <section id="hero" aria-labelledby="hero-titulo">
+    <div class="container hero-inner">
+
+      <div class="hero-texto">
+        <p class="hero-market">{t.hero.market}</p>
+        <p class="eyebrow">{t.hero.eyebrow}</p>
+        <h1 id="hero-titulo">{t.hero.h1}</h1>
+        <p class="hero-sub">{t.hero.sub}</p>
+        <p class="hero-corpo">{t.hero.corpo}</p>
+        <ul class="hero-bullets" role="list">
+          {t.hero.bullets.map((b) => <li>{b}</li>)}
+        </ul>
+        <div class="mig-hero">
+          <img src="/made-in-germany.png" alt="Made in Germany" width="110" height="44" loading="eager" />
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SOLUÇÃO ── -->
+  <section id="solucao" aria-labelledby="sol-titulo">
+    <div class="container">
+      <div class="section-label">{t.sol.label}</div>
+      <h2 id="sol-titulo" set:html={t.sol.h2Html} />
+      <div class="sol-layout">
+        <div class="sol-corpo">
+          <p>{t.sol.corpo}</p>
+        </div>
+        <ul class="sol-bullets" role="list">
+          {t.sol.bullets.map((b) => <li>{b}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+  </div><!-- /video-stage -->
+
+  <!-- ── FAIXA DE INDICADORES ── -->
+  <section class="faixa-stats" aria-label={t.stats.aria}>
+    <div class="container faixa-inner">
+      {stats.map((n, i) => (
+        <>
+          {i > 0 && <span class="faixa-sep" aria-hidden="true"></span>}
+          <div class="faixa-item">
+            {i === 3 ? (
+              <span class="faixa-nrow"><span class="faixa-pre">{t.stats.ate}</span><span class="faixa-n">{n}</span></span>
+            ) : (
+              <span class="faixa-n">{n}</span>
+            )}
+            <span class="faixa-l">{t.stats.items[i]}</span>
+          </div>
+        </>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── FAIXA CINEMATOGRÁFICA (anel instalado) ── -->
+  <section class="cine-band" aria-label={t.cine.aria}>
+    <div class="cine-band__inner container">
+      <p class="cine-band__eyebrow">{t.cine.eyebrow}</p>
+      <p class="cine-band__frase">{t.cine.frase}</p>
+    </div>
+  </section>
+
+  <!-- ── TECNOLOGIA ── -->
+  <section id="tecnologia" aria-labelledby="tec-titulo">
+    <div class="container">
+
+      <div class="tec-top">
+        <div class="tec-texto">
+          <div class="section-label">{t.tec.label}</div>
+          <h2 id="tec-titulo">{t.tec.h2}</h2>
+          <p>{t.tec.corpo}</p>
+          <div class="tec-destaque">
+            <strong>{t.tec.destaqueTitulo}</strong>
+            <span>{t.tec.destaqueTexto}</span>
+          </div>
+        </div>
+
+        <figure class="tec-video">
+          <video
+            src="/merus-agua.mp4"
+            autoplay loop muted playsinline preload="metadata"
+          ></video>
+        </figure>
+      </div>
+
+      <div class="modelos">
+        <h3>{t.tec.modelosTitulo}</h3>
+        <div class="modelos-grid">
+          {t.tec.modelos.map((m, i) => (
+            <article class="modelo">
+              <img src={modeloImgs[i]} alt={m.alt} loading="lazy" width="680" height="680" />
+              <div>
+                <span class="spec-tag">{m.tag}</span>
+                <h4>{m.nome}</h4>
+                <p>{m.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="data-callout" aria-label={t.tec.dataAria}>
+        <div class="data-grid">
+          <div class="data-block">
+            <span class="data-n">1.03</span>
+            <span class="data-unit">MPY</span>
+            <span class="data-label">{t.tec.com}</span>
+            <span class="data-sub">{t.tec.trocador} 101-E9A</span>
+          </div>
+          <div class="data-vs" aria-hidden="true">vs</div>
+          <div class="data-block data-block--ruim">
+            <span class="data-n">2.87</span>
+            <span class="data-unit">MPY</span>
+            <span class="data-label">{t.tec.sem}</span>
+            <span class="data-sub">{t.tec.trocador} 101-E9B</span>
+          </div>
+        </div>
+        <p class="data-delta" set:html={t.tec.deltaHtml} />
+        <p class="data-mpy" set:html={t.tec.mpyHtml} />
+        <p class="data-note">{t.tec.nota}</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── VÍDEO MERUS (espaço reservado até o vídeo ser enviado — ver const VIDEO no topo) ── -->
+  <section id="video" class="video-sec" aria-labelledby="video-titulo">
+    <div class="container">
+      <p class="aplic-kicker">{t.video.kicker}</p>
+      <div class="video-sec__head">
+        <h2 id="video-titulo">{t.video.h2}</h2>
+        <p>{t.video.lead}</p>
+      </div>
+      <div class="video-frame">
+        {VIDEO.youtubeId ? (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${VIDEO.youtubeId}?rel=0`}
+            title={t.video.iframeTitle}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        ) : VIDEO.file ? (
+          <video src={VIDEO.file} poster={VIDEO.poster} controls playsinline preload="none"></video>
+        ) : (
+          <div class="video-ph" style={`--video-poster:url(${VIDEO.poster})`}>
+            <span class="video-ph__play" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
+            </span>
+            <strong>{t.video.phTitulo}</strong>
+            <span class="video-ph__tag">{t.video.phTexto}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RESULTADOS (ANTES E DEPOIS) ── -->
+  <section id="resultados" aria-labelledby="res-titulo" class="sec-cinza">
+    <div class="container">
+      <div class="section-label">{t.res.label}</div>
+      <h2 id="res-titulo" set:html={t.res.h2Html} />
+      <p class="section-corpo">{t.res.corpo}</p>
+
+      <div class="ba-grid">
+        {t.res.cards.map((c, i) => (
+          <div class="ba-card">
+            <div class="ba" style="--pos:50%">
+              <img class="ba-img" src={baImgs[i].depois} alt={c.altDepois} loading="lazy" width="700" height="525" />
+              <img class="ba-img ba-img--antes" src={baImgs[i].antes} alt={c.altAntes} loading="lazy" width="700" height="525" />
+              <span class="ba-tag ba-tag--antes">{t.res.antes}</span>
+              <span class="ba-tag ba-tag--depois">{t.res.depois}</span>
+              <div class="ba-line" aria-hidden="true">
+                <span class="ba-grip">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M6 4L2 8l4 4M10 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label={`${t.res.comparar} — ${c.nome}`} />
+            </div>
+            <div class="ba-legendas">
+              <p><strong>{t.res.antes}</strong> {c.capAntes}</p>
+              <p><strong>{t.res.depois}</strong> {c.capDepois}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="res-micro">{t.res.micro}</p>
+    </div>
+  </section>
+
+  <!-- ── FAIXA VERDE (quebra de cor · destaque) ── -->
+  <section class="faixa-verde" aria-label={t.verde.aria}>
+    <div class="container faixa-verde__inner">
+      <p class="faixa-verde__frase" set:html={t.verde.fraseHtml} />
+    </div>
+  </section>
+
+  <!-- ── APLICAÇÕES (Vessel / FPSO / Offshore) ── -->
+  <section id="aplicacoes" class="aplic" aria-labelledby="ap-titulo">
+    <div class="container">
+      <p class="aplic-kicker">{t.aplic.kicker}</p>
+      <div class="aplic-head">
+        <h2 id="ap-titulo" set:html={t.aplic.h2Html} />
+        <p class="aplic-lead">{t.aplic.lead}</p>
+      </div>
+
+      <div class="aplic-grid">
+        {t.aplic.assets.map((a, i) => (
+          <article>
+            <AssetDiagram type={assetTypes[i]} />
+            <div class="aplic-card-head"><h3>{a.nome}</h3><span>{a.label}</span></div>
+            <p>{a.desc}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="aplic-list">
+        <div>
+          <h3>{t.aplic.listaTitulo}</h3>
+          <p>{t.aplic.listaTexto}</p>
+          <a class="aplic-cta" href="#contato">{t.aplic.cta}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <ul role="list">
+          {t.aplic.lista.map((item) => (
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 8 3 3 7-7" stroke="currentColor" stroke-width="1.4"/></svg>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CASE: ARABIA I ── -->
+  <section id="case-arabia" aria-labelledby="case-titulo" class="sec-cinza">
+    <div class="case-media" aria-hidden="true">
+      <video src="/arabia-i.mp4" autoplay loop muted playsinline preload="metadata"></video>
+    </div>
+    <div class="container case-inner">
+      <div class="case-texto">
+        <div class="section-label">{t.caso.label}</div>
+        <h2 id="case-titulo" set:html={t.caso.h2Html} />
+        <p class="case-sub">Jackup &middot; Borr Drilling &middot; Arabia I</p>
+        <p class="case-contrato">{t.caso.contrato}</p>
+
+        <ul class="case-specs" role="list">
+          {caseSpecs.map(([nome, tag]) => (
+            <li><span class="spec-nome">{nome}</span><span class="spec-tag">{tag}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ESTUDOS DE CASO (da apresentação institucional) ── -->
+  <section id="casos" class="casos" aria-labelledby="casos-titulo">
+    <div class="container">
+      <p class="aplic-kicker">{t.casos.kicker}</p>
+      <div class="aplic-head">
+        <h2 id="casos-titulo" set:html={t.casos.h2Html} />
+        <p class="aplic-lead">{t.casos.lead}</p>
+      </div>
+
+      <div class="casos-grid">
+        <article class="caso-card">
+          <div class="caso-media">
+            <figure>
+              <img src="/cases/caco3-antes.jpg" alt={t.casos.caco3.fotoAlt} loading="lazy" width="338" height="286" />
+              <figcaption>{t.casos.caco3.legenda}</figcaption>
+            </figure>
+          </div>
+          <div class="caso-body">
+            <span class="spec-tag">{t.casos.caco3.tag}</span>
+            <h3>{t.casos.caco3.titulo}</h3>
+            <p>{t.casos.caco3.texto}</p>
+            <ul class="caso-fatos" role="list">
+              {t.casos.caco3.fatos.map((f) => <li><strong>{f.n}</strong><span>{f.l}</span></li>)}
+            </ul>
+          </div>
+        </article>
+
+        <article class="caso-card">
+          <div class="caso-media caso-media--2">
+            <figure>
+              <img src="/cases/agua-mar-set-2017.jpg" alt={t.casos.aguaMar.fotoAltSet} loading="lazy" width="668" height="444" />
+              <figcaption>{t.casos.aguaMar.legendaSet}</figcaption>
+            </figure>
+            <figure>
+              <img src="/cases/agua-mar-dez-2017.jpg" alt={t.casos.aguaMar.fotoAltDez} loading="lazy" width="656" height="440" />
+              <figcaption>{t.casos.aguaMar.legendaDez}</figcaption>
+            </figure>
+          </div>
+          <div class="caso-body">
+            <span class="spec-tag">{t.casos.aguaMar.tag}</span>
+            <h3>{t.casos.aguaMar.titulo}</h3>
+            <p>{t.casos.aguaMar.texto}</p>
+            <p class="caso-conclusao"><span>{t.casos.aguaMar.conclusaoTitulo}</span>{t.casos.aguaMar.conclusao}</p>
+          </div>
+        </article>
+      </div>
+
+      <a class="aplic-cta casos-mais" href={CASE_STUDIES_URL} target="_blank" rel="noopener">{t.casos.mais}
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4 2h6v6M10 2 2.5 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── CLIENTES ── -->
+  <section id="clientes" aria-labelledby="cl-titulo">
+    <div class="container">
+      <div class="section-label">{t.cl.label}</div>
+      <h2 id="cl-titulo" set:html={t.cl.h2Html} />
+      <p class="section-corpo">{t.cl.corpo}</p>
+
+      <div class="logos-marquee" aria-label={t.cl.logosAria}>
+        <div class="logos-viewport">
+          <div class="logos-group">
+            {logos.map((l) => <img src={`/logos/${l.src}.png`} alt={l.alt} loading="lazy" width="440" height="198" />)}
+          </div>
+          <div class="logos-group" aria-hidden="true">
+            {logos.map((l) => <img src={`/logos/${l.src}.png`} alt="" loading="lazy" width="440" height="198" />)}
+          </div>
+        </div>
+      </div>
+
+      <p class="cl-nota">{t.cl.nota}</p>
+    </div>
+  </section>
+
+  <!-- ── FAIXA DE MARCA (vídeo aéreo Gávea) ── -->
+  <section class="brand-band" aria-label="Gávea Green">
+    <video class="brand-band__video" src="/gavea-aerial.mp4" poster="/gavea-aerial-poster.jpg" autoplay loop muted playsinline preload="none" aria-hidden="true"></video>
+    <div class="brand-band__scrim" aria-hidden="true"></div>
+    <div class="container brand-band__inner">
+      <p class="brand-band__eyebrow">Gávea Green</p>
+      <p class="brand-band__frase">{t.brand.frase}</p>
+      <p class="brand-band__sub">{t.brand.sub}</p>
+      <p class="brand-band__rep">{t.brand.rep}</p>
+    </div>
+  </section>
+
+  <!-- ── CONTATO ── -->
+  <section id="contato" aria-labelledby="ct-titulo">
+    <div class="container contato-grid">
+      <div class="contato-intro">
+        <div class="section-label">{t.ct.label}</div>
+        <h2 id="ct-titulo" set:html={t.ct.h2Html} />
+        <p class="section-corpo">{t.ct.corpo}</p>
+
+        <p class="contato-falar">{t.ct.falar}</p>
+        <ul class="contato-pessoas" role="list">
+          {contatos.map((c) => (
+            <li>
+              <strong>{c.nome}</strong>
+              <a href={mailto(c.email)} aria-label={`${t.ct.emailPara} ${c.nome}`}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.75" y="3.25" width="12.5" height="9.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="m2.5 4.5 5.5 4 5.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                {c.email}
+              </a>
+              <a href={telHref(c.tel)} aria-label={`${t.ct.ligarPara} ${c.nome}`}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.6 2.5H3.9c-.8 0-1.4.6-1.4 1.4 0 5.3 4.3 9.6 9.6 9.6.8 0 1.4-.6 1.4-1.4v-1.7l-2.9-1.1-1.2 1.3c-1.5-.7-2.7-1.9-3.4-3.4l1.3-1.2-1.7-3.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                {c.tel}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <ul class="contato-info" role="list">
+          <li>
+            <span>{t.ct.mercado}</span>
+            {t.ct.mercadoTexto}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Envios vão para leo.moteff@gaveagroup.com (via FormSubmit) -->
+      <form class="contato-form" action="https://formsubmit.co/leo.moteff@gaveagroup.com" method="POST">
+        <input type="hidden" name="_subject" value="Nova avaliação técnica — site MERUS / Gavea Green" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="Idioma" value={lang === "en" ? "Inglês (EN)" : "Português (PT)"} />
+        <input type="text" name="_honey" class="contato-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="campo">
+          <label for="c-nome">{t.ct.nome}</label>
+          <input id="c-nome" name="Nome" type="text" required autocomplete="name" />
+        </div>
+        <div class="campo">
+          <label for="c-empresa">{t.ct.empresa}</label>
+          <input id="c-empresa" name="Empresa" type="text" autocomplete="organization" />
+        </div>
+        <div class="campo-linha">
+          <div class="campo">
+            <label for="c-email">{t.ct.email}</label>
+            <input id="c-email" name="E-mail" type="email" required autocomplete="email" />
+          </div>
+          <div class="campo">
+            <label for="c-tel">{t.ct.tel}</label>
+            <input id="c-tel" name="Telefone" type="tel" autocomplete="tel" />
+          </div>
+        </div>
+        <div class="campo">
+          <label for="c-msg">{t.ct.msg}</label>
+          <textarea id="c-msg" name="Mensagem" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn-primario contato-enviar">
+          {t.ct.enviar}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <p class="contato-nota">{t.ct.nota}</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logos">
+          <img src="/gavea-green-bco.png" alt="Gavea Green" class="footer-logo-gavea" />
+        </div>
+        <p set:html={t.footer.taglineHtml} />
+        <p class="footer-rep">{t.brand.rep}</p>
+      </div>
+      <nav class="footer-links" aria-label={t.nav.footer}>
+        <a href="#solucao">{t.nav.solucao}</a>
+        <a href="#tecnologia">{t.nav.tecnologia}</a>
+        <a href="#aplicacoes">{t.nav.aplicacoes}</a>
+        <a href="#clientes">{t.nav.clientes}</a>
+        <a href={CASE_STUDIES_URL} target="_blank" rel="noopener">{t.nav.cases}</a>
+      </nav>
+      <div class="footer-legal">
+        <p>&copy; {year} {t.footer.legal}</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Vídeo travado: scrub 1:1 no scroll (frente ao descer, reverse ao subir) -->
+  <script is:inline>
+    (function () {
+      var stage = document.getElementById('vstage');
+      var video = document.getElementById('bgvideo');
+      if (!stage || !video) return;
+
+      var prefersReduced =
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var duration = 0;
+      var ticking = false;
+
+      function update() {
+        ticking = false;
+        if (!duration) return;
+        var rect = stage.getBoundingClientRect();
+        var total = stage.offsetHeight - window.innerHeight;
+        if (total <= 0) return;
+        var progress = Math.min(1, Math.max(0, -rect.top / total));
+        var t = progress * duration;
+        if (Math.abs(video.currentTime - t) > 1 / 60) {
+          try { video.currentTime = t; } catch (e) {}
+        }
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }
+
+      function ready() {
+        duration = video.duration || 0;
+        update();
+        if (prefersReduced) { video.pause(); return; }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+      }
+
+      // iOS/Safari não renderiza o frame de um vídeo pausado que nunca "tocou".
+      // Damos um play mudo (permitido em muted+playsinline) e pausamos em seguida
+      // para fixar o primeiro frame — assim o scrub aparece também no mobile.
+      function prime() {
+        var p;
+        try { p = video.play(); } catch (e) {}
+        if (p && typeof p.then === 'function') {
+          p.then(function () { video.pause(); ready(); })
+           .catch(function () { video.pause(); ready(); });
+        } else {
+          video.pause();
+          ready();
+        }
+      }
+
+      if (video.readyState >= 1) {
+        prime();
+      } else {
+        video.addEventListener('loadedmetadata', prime, { once: true });
+      }
+
+      // Fallback: se o autoplay mudo for bloqueado, prima o vídeo no primeiro toque.
+      window.addEventListener('touchstart', function primeOnce() {
+        window.removeEventListener('touchstart', primeOnce);
+        var p;
+        try { p = video.play(); } catch (e) {}
+        if (p && typeof p.then === 'function') {
+          p.then(function () { video.pause(); update(); }).catch(function () {});
+        }
+      }, { passive: true });
+    })();
+  </script>
+
+  <!-- Slider comparativo antes/depois -->
+  <script is:inline>
+    (function () {
+      var sliders = document.querySelectorAll('.ba-range');
+      for (var i = 0; i < sliders.length; i++) {
+        (function (range) {
+          var ba = range.closest('.ba');
+          if (!ba) return;
+          function update() { ba.style.setProperty('--pos', range.value + '%'); }
+          range.addEventListener('input', update);
+          update();
+        })(sliders[i]);
+      }
+    })();
+  </script>
+
+  <!-- Contadores animados: indicadores (+70, 30+, 90%) e tabela MPY (1.03 / 2.87) -->
+  <script is:inline>
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!('IntersectionObserver' in window)) return;
+      function animate(el) {
+        var raw = el.textContent.trim();
+        var m = raw.match(/^([\d]+(?:[.,][\d]+)?)(.*)$/);
+        if (!m) return;
+        var numStr = m[1].replace(',', '.'), suffix = m[2];
+        var target = parseFloat(numStr);
+        var decimals = (numStr.split('.')[1] || '').length;
+        var dur = 1300, start = null;
+        function fmt(v) { return decimals ? v.toFixed(decimals) : String(Math.round(v)); }
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min(1, (ts - start) / dur);
+          var e = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt(e * target) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        el.textContent = fmt(0) + suffix;
+        requestAnimationFrame(step);
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { io.unobserve(en.target); animate(en.target); }
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('.faixa-n, .data-n').forEach(function (n) { io.observe(n); });
+    })();
+  </script>
+
+</Layout>

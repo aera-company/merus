@@ -1261,7 +1261,7 @@ p { color: var(--tx-2); max-width: 64ch; }
   gap: var(--logos-gap);
   flex-shrink: 0;
   min-width: max-content;
-  animation: logos-scroll 34s linear infinite;
+  animation: logos-scroll 44s linear infinite;
 }
 
 /* logos na cor original, em loop contínuo (sem pausa no hover) */

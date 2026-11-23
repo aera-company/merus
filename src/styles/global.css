@@ -276,6 +276,7 @@ p { color: var(--tx-2); max-width: 64ch; }
   height: 100%;
   object-fit: cover;
 }
+.video-canvas { display: none; }   /* só aparece no celular (ver bloco "HERO NO CELULAR") */
 
 /* ── HERO ── */
 #hero {
@@ -2233,10 +2234,19 @@ p { color: var(--tx-2); max-width: 64ch; }
     z-index: 2;                                  /* acima do texto */
     box-shadow: 0 14px 16px 0 var(--branco);     /* texto some suave ao passar por baixo */
   }
-  .video-bg video {
-    /* acompanha o anel, que vai da esquerda para a direita ao longo do vídeo */
-    object-position: calc(11% + var(--scrub, 0) * 78%) 50%;
-    transform: scale(1.1);                       /* anel 10% maior dentro da mesma faixa */
+  /* No celular o anel é uma sequência de imagens já centradas (canvas), não o vídeo:
+     desenhar imagem é instantâneo, então o giro acompanha o dedo sem tremer. */
+  .video-bg video { display: none; }
+  .video-canvas {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 110%;                                /* anel 10% maior dentro da mesma faixa */
+    width: auto;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    background: url(/hero-seq/f000.jpg) center / contain no-repeat;  /* 1º quadro antes do JS */
   }
 
   #hero {

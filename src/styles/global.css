@@ -2219,3 +2219,47 @@ p { color: var(--tx-2); max-width: 64ch; }
 @media (max-width: 860px) {
   #case-arabia .case-media::before { display: none; }
 }
+
+/* ── HERO NO CELULAR: anel numa faixa fixa no topo, texto em fundo branco embaixo ──
+   O vídeo continua travado e girando com o scroll; o texto passa por baixo da faixa,
+   então nunca fica em cima do anel. */
+@media (max-width: 760px) {
+  .video-stage { --hero-band: clamp(210px, 36svh, 320px); }
+
+  .video-bg {
+    top: 64px;                                   /* logo abaixo do menu */
+    height: var(--hero-band);
+    margin-bottom: calc(-1 * var(--hero-band));
+    z-index: 2;                                  /* acima do texto */
+    box-shadow: 0 14px 16px 0 var(--branco);     /* texto some suave ao passar por baixo */
+  }
+  .video-bg video {
+    /* acompanha o anel, que vai da esquerda para a direita ao longo do vídeo */
+    object-position: calc(11% + var(--scrub, 0) * 78%) 50%;
+    transform: scale(1.1);                       /* anel 10% maior dentro da mesma faixa */
+  }
+
+  #hero {
+    min-height: 0;
+    display: block;
+    padding-block: calc(var(--hero-band) + 28px) 56px;
+  }
+  .hero-texto {
+    max-width: none;
+    margin-left: 0;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .hero-market { align-self: flex-start; }
+  .eyebrow { opacity: 1; }
+  .hero-bullets { align-items: flex-start; }
+  .hero-bullets li { padding-right: 0; padding-left: 20px; }
+  .hero-bullets li::before { right: auto; left: 0; }
+
+  #solucao {
+    min-height: 0;
+    display: block;
+    padding-block: 24px 72px;
+  }
+  #solucao h2 { margin-bottom: 24px; }
+}

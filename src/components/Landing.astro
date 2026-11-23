@@ -575,6 +575,8 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
         var total = stage.offsetHeight - window.innerHeight;
         if (total <= 0) return;
         var progress = Math.min(1, Math.max(0, -stage.getBoundingClientRect().top / total));
+        // no celular o CSS usa este valor para manter o anel enquadrado na faixa do topo
+        stage.style.setProperty('--scrub', progress.toFixed(4));
         // para um quadro antes do fim, para o vídeo nunca entrar em "ended"
         target = Math.min(progress * duration, Math.max(0, duration - 0.05));
         apply();

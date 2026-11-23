@@ -92,7 +92,7 @@ export const dict = {
     video: {
       kicker: "MERUS em ação",
       h2: "Veja o MERUS funcionando.",
-      lead: "Do princípio físico à instalação em campo, em poucos minutos.",
+      lead: "Do problema dentro da tubulação ao resultado medido em campo, em pouco mais de um minuto.",
       phTitulo: "Vídeo em breve",
       phTexto: "Espaço reservado para o vídeo MERUS",
       iframeTitle: "Vídeo MERUS",
@@ -327,7 +327,7 @@ export const dict = {
     video: {
       kicker: "MERUS in action",
       h2: "See MERUS at work.",
-      lead: "From the physical principle to field installation, in a few minutes.",
+      lead: "From the problem inside the pipe to the result measured in the field, in just over a minute.",
       phTitulo: "Video coming soon",
       phTexto: "Reserved for the MERUS video",
       iframeTitle: "MERUS video",

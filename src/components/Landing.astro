@@ -13,7 +13,7 @@ const year = new Date().getFullYear();
 // Para ativar, preencha UM deles:
 //   youtubeId: o ID do vídeo no YouTube (ex.: "dQw4w9WgXcQ")
 //   file:      um arquivo dentro de /public (ex.: "/merus-video.mp4")
-const VIDEO = { youtubeId: "", file: "", poster: "/image-03.jpg" };
+const VIDEO = { youtubeId: "", file: "/merus-video.mp4", poster: "/merus-video-poster.jpg" };
 
 const stats = ["70+", "30+", "0", "90%"];
 
@@ -81,9 +81,7 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
         <a href="#tecnologia">{t.nav.tecnologia}</a>
         <a href="#aplicacoes">{t.nav.aplicacoes}</a>
         <a href="#clientes">{t.nav.clientes}</a>
-        <a href={CASE_STUDIES_URL} target="_blank" rel="noopener" class="nav-ext">{t.nav.cases}
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4 2h6v6M10 2 2.5 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+        <a href="#casos">{t.nav.cases}</a>
       </nav>
       <div class="lang-switch" role="group" aria-label={t.nav.lang}>
         <a href="/" hreflang="pt-BR" lang="pt-BR" aria-label="Português" aria-current={lang === "pt" ? "true" : undefined}>PT</a>
@@ -226,7 +224,7 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
     </div>
   </section>
 
-  <!-- ── VÍDEO MERUS (espaço reservado até o vídeo ser enviado — ver const VIDEO no topo) ── -->
+  <!-- ── VÍDEO MERUS (arquivo e capa definidos na const VIDEO, no topo) ── -->
   <section id="video" class="video-sec" aria-labelledby="video-titulo">
     <div class="container">
       <p class="aplic-kicker">{t.video.kicker}</p>
@@ -244,7 +242,7 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
             allowfullscreen
           ></iframe>
         ) : VIDEO.file ? (
-          <video src={VIDEO.file} poster={VIDEO.poster} controls playsinline preload="none"></video>
+          <video src={VIDEO.file} poster={VIDEO.poster} controls playsinline preload="none" aria-label={t.video.iframeTitle}></video>
         ) : (
           <div class="video-ph" style={`--video-poster:url(${VIDEO.poster})`}>
             <span class="video-ph__play" aria-hidden="true">
@@ -534,7 +532,7 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^\d+]/g, "")}`;
         <a href="#tecnologia">{t.nav.tecnologia}</a>
         <a href="#aplicacoes">{t.nav.aplicacoes}</a>
         <a href="#clientes">{t.nav.clientes}</a>
-        <a href={CASE_STUDIES_URL} target="_blank" rel="noopener">{t.nav.cases}</a>
+        <a href="#casos">{t.nav.cases}</a>
       </nav>
       <div class="footer-legal">
         <p>&copy; {year} {t.footer.legal}</p>
